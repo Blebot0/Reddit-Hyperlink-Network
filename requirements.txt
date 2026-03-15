@@ -6,3 +6,4 @@ scikit-learn
 mlxtend
 urllib3
 networkx
+scipy
