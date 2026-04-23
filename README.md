@@ -68,7 +68,7 @@ jupyter notebook main_notebook.ipynb
 ## Key Dependencies and Versions
 
 Python:
-- Local runtime reference: `Python 3.14.0`
+- Local runtime reference: `Python 3.12.13`
 
 Core packages (pinned package list lives in `requirements.txt`):
 - `pandas`
