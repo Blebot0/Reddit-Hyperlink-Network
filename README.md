@@ -42,6 +42,7 @@ Preprocessing in the notebook:
 - Build analysis/modeling features from graph and language signals
 
 If raw files are not already in `data/`, the notebook workflow creates the folder and downloads needed files.
+The repository keeps `data/.gitkeep` so the directory is tracked even when large dataset files are not committed.
 
 ## Reproducibility
 
@@ -91,6 +92,7 @@ Data-Mining-Project/
 ├── requirements.txt
 ├── README.md
 ├── data/
+│   └── .gitkeep
 └── .gitignore
 ```
 
