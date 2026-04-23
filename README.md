@@ -68,18 +68,18 @@ jupyter notebook main_notebook.ipynb
 ## Key Dependencies and Versions
 
 Python:
-- Local runtime reference: `Python 3.12.13`
+- `Python 3.12.13`
 
-Core packages (pinned package list lives in `requirements.txt`):
-- `pandas`
-- `numpy`
-- `matplotlib`
-- `seaborn`
-- `scikit-learn`
-- `mlxtend`
-- `urllib3`
-- `networkx`
-- `scipy`
+Core packages (full pinned environment lives in `requirements.txt`):
+- `pandas==2.2.2`
+- `numpy==2.0.2`
+- `matplotlib==3.10.0`
+- `seaborn==0.13.2`
+- `scikit-learn==1.6.1`
+- `mlxtend==0.23.4`
+- `urllib3==2.5.0`
+- `networkx==3.6.1`
+- `scipy==1.16.3`
 
 ## Repository Structure
 
