@@ -1,135 +1,137 @@
-# Reddit Hyperlink Network: Dataset Comparison, Selection, and EDA
+# What Drives Conflict Between Reddit Communities?
 
-## 📖 Overview
+Author: Keshav Kapur (UIN: 237007751)
 
-This project is a **Data Mining Course (CSCE 676)** checkpoint that selects a dataset supporting both course-covered and external techniques, then performs exploratory data analysis (EDA) on the chosen dataset. It provides:
+## Main Deliverable
 
-- **Dataset Comparison**: Systematic evaluation of three candidate datasets (Reddit Hyperlink Network, Sentiment140, Hate Speech) across data quality, algorithmic feasibility, bias, and ethical considerations.
-- **Dataset Selection**: Justified choice of the **Reddit Hyperlink Network** for graph mining, PageRank, community detection, and association-rule mining, plus external techniques (GNNs/node embeddings, temporal and signed network analysis).
-- **Exploratory Data Analysis**: Data loading, preparation, graph construction, degree distributions, sentiment analysis, PageRank, Louvain community detection, and subreddit co-link pattern mining (Apriori / association rules).
+Start here: `main_notebook.ipynb`
 
-The notebook (`237007751_checkpoint1.ipynb`) accompanies a data mining course project and documents data basics, collection, cleaning, and bias awareness for the Reddit hyperlink network.
+Checkpoint progression notebooks:
+- `checkpoints/237007751_checkpoint1.ipynb`
+- `checkpoints/237007751_checkpoint2.ipynb`
 
-**Author:** Keshav Kapur | **UIN:** 237007751
+## Plots and Assets
 
----
+- Keep exported figures from `main_notebook.ipynb` in `assets/`.
 
-## 📦 Installation
+## Project Overview
 
-Clone this repository and install dependencies:
+This CSCE 676 Data Mining project analyzes the SNAP Reddit Hyperlink Network to study inter-community conflict. The central theme is whether hostile cross-subreddit links can be predicted, and which factors are most informative: network structure, language features, or both.
+
+The final notebook includes conflict-focused exploratory analysis, graph mining, association rule mining, and supervised learning with network plus LIWC-derived text features.
+
+## Research Questions
+
+1. How does subreddit network structure relate to hostile cross-community interactions?
+2. Which subreddit pairs are frequently co-targeted in hostile contexts, and what conflict corridors emerge?
+3. How accurately can hostile links be predicted using graph and linguistic features?
+
+## Data and Preprocessing
+
+Dataset source:
+- [SNAP: Reddit Hyperlink Network](https://snap.stanford.edu/data/soc-RedditHyperlinks.html)
+
+Primary files used:
+- [soc-redditHyperlinks-body.tsv](https://snap.stanford.edu/data/soc-redditHyperlinks-body.tsv)
+- [soc-redditHyperlinks-title.tsv](https://snap.stanford.edu/data/soc-redditHyperlinks-title.tsv)
+
+Preprocessing in the notebook:
+- Load raw TSV files
+- Parse LIWC attributes from `PROPERTIES`
+- Parse timestamps and sentiment labels
+- Aggregate multi-edges into a directed graph representation
+- Build analysis/modeling features from graph and language signals
+
+If raw files are not already in `data/`, the notebook workflow creates the folder and downloads needed files.
+The repository keeps `data/.gitkeep` so the directory is tracked even when large dataset files are not committed.
+
+## Reproducibility
+
+This project was developed in Colab-style notebook workflows and is runnable locally with Jupyter.
+
+1. Install dependencies:
 
 ```bash
-git clone https://github.com/<your-username>/Data-Mining-Project.git
-cd Data-Mining-Project
 pip install -r requirements.txt
 ```
 
-**Dependencies** (see `requirements.txt`): `pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`, `mlxtend`, `urllib3`, `networkx`.
-
-For a virtual environment:
+2. Run the final deliverable notebook:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate  
-pip install -r requirements.txt
+jupyter notebook main_notebook.ipynb
 ```
 
----
+3. Optional progression review:
+- Open `checkpoints/237007751_checkpoint1.ipynb` first
+- Then `checkpoints/237007751_checkpoint2.ipynb`
+- Then `main_notebook.ipynb` (submission notebook copy)
 
-## ⚡ Quick Start
+## Key Dependencies and Versions
 
-### 1. Add Reddit Hyperlink Data
+Python:
+- `Python 3.12.13`
 
-The notebook downloads the **Reddit Hyperlink Network** (SNAP) automatically if not present:
+Core packages (full pinned environment lives in `requirements.txt`):
+- `pandas==2.2.2`
+- `numpy==2.0.2`
+- `matplotlib==3.10.0`
+- `seaborn==0.13.2`
+- `scikit-learn==1.6.1`
+- `mlxtend==0.23.4`
+- `urllib3==2.5.0`
+- `networkx==3.6.1`
+- `scipy==1.16.3`
 
-- **Body links**: [soc-redditHyperlinks-body.tsv](https://snap.stanford.edu/data/soc-redditHyperlinks-body.tsv) (~319 MB)
-- **Title links**: [soc-redditHyperlinks-title.tsv](https://snap.stanford.edu/data/soc-redditHyperlinks-title.tsv) (~369 MB)
+## Repository Structure
 
-Place them in `data/` or run the notebook; it will create `data/` and download when needed.
-
-### 2. Run the Notebook
-
-Open and run all cells in `237007751_checkpoint1.ipynb`:
-
-```bash
-jupyter notebook 237007751_checkpoint1.ipynb
-# or
-jupyter lab 237007751_checkpoint1.ipynb
+```text
+Data-Mining-Project/
+├── checkpoints/
+│   ├── 237007751_checkpoint1.ipynb
+│   └── 237007751_checkpoint2.ipynb
+├── main_notebook.ipynb
+├── requirements.txt
+├── README.md
+├── assets/
+│   └── .gitkeep
+├── data/
+│   └── .gitkeep
+└── .gitignore
 ```
 
-The notebook uses **body** links as the primary dataset (more substantive than title-only links).
+## Key Results (from notebook outputs)
 
-### 3. Main Workflow in the Notebook
+- **Boundary effect (plot + counts):** Cross-community links are more hostile than within-community links (**8.8%** vs **6.9%**), even though within-community links are more common overall.
+- **Conflict corridors (association-rule outputs):** Hostile mining yields **6,489** rules vs **241** positive-link rules; overlap analysis shows **607 conflict-only**, **16 friendly-only**, and **90 shared** corridors.
+- **Prediction quality (model output + confusion plots):** Phase 5 ROC-AUC is **0.8015** (GDBT) and **0.7854** (L1-LR). GDBT ranks better overall, while L1-LR captures more hostile links (negative-class recall **0.70** vs **0.08**).
+- **What drives conflict (feature-importance plots):** GBM importance is **59.0% structural** vs **41.0% linguistic**; top feature is `tgt_neg_incoming_frac` (**0.3869**).
+- **Temporal robustness (Phase 6):** AUC drops are small under forward-in-time evaluation: GDBT **-0.0137**, L1-LR **-0.0062**.
+- **Signed-network extension (Phase 7):** On 406,382 triangles, observed balanced fraction is **0.8382** vs null mean **0.8474** (**z = -2.93**), indicating structure but less balance than chance under this null.
 
-| Section | Description |
-|--------|-------------|
-| **(A)** | Identification of three candidate datasets (Reddit, Sentiment140, Hate Speech) |
-| **(B)** | Comparative analysis (tasks, quality, feasibility, bias, ethics) |
-| **(C)** | Dataset selection: Reddit Hyperlink Network + rationale and trade-offs |
-| **(D)** | EDA: load TSVs → prepare & clean → build directed graph → degree distributions → sentiment → PageRank → community detection → Apriori/association rules |
-| **(E)** | Initial insights, hypotheses, and research questions |
----
+### Result Plots by Research Question
 
-## 📊 Example Output
+- **RQ1 (structure vs hostility):**  
+  Cross- vs within-community hostility  
+  ![Phase 3 cross vs within hostility](assets/phase3_cross_vs_within_hostility.png)  
+  Centrality-position structure  
+  ![Phase 3 centrality scatter](assets/phase3_centrality_scatter.png)
 
-**Graph summary (body links):**
+- **RQ2 (conflict corridors):**  
+  Conflict intensity context (hostility landscape used before corridor mining)  
+  ![Phase 2 sentiment and time](assets/phase2_sentiment_and_time.png)
 
-| Metric | Value |
-|--------|--------|
-| Nodes (subreddits) | 35,776 |
-| Unique directed edges | 137,821 |
-| Total hyperlinks (multi-edges) | 286,561 |
-| Density | ~0.0001 |
-| Time range | 2013-12-31 → 2017-04-30 |
+- **RQ3 (prediction and drivers):**  
+  Model error profile comparison  
+  ![Phase 5 confusion matrices](assets/phase5_model_confusion_matrices.png)  
+  Temporal robustness of predictive performance  
+  ![Phase 6 AUC comparison](assets/phase6_random_vs_temporal_auc.png)
 
-**Core columns (after preparation):**
+- **Extended analysis (beyond RQ1-RQ3):**  
+  Signed-network structural balance test  
+  ![Phase 7 balance null model](assets/phase7_signed_balance_null_model.png)
 
-| Column | Description |
-|--------|-------------|
-| `SOURCE_SUBREDDIT` | Subreddit that posts the link |
-| `TARGET_SUBREDDIT` | Subreddit being linked to |
-| `POST_ID` | Reddit post ID |
-| `TIMESTAMP` | When the link was posted |
-| `POST_LABEL` | Link sentiment: +1 (positive) or -1 (negative) |
+## Per-RQ Answers
 
-**Sample frequent 2-itemsets (co-linked subreddit pairs):**
-
-- `askreddit` + `iama`, `askreddit` + `pics`, `askreddit` + `todayilearned`, …
-- Association rules (e.g. `mhocpress` → `mhoc`) with confidence and lift.
-
----
-
-## 🧩 Key Features
-
-- **Deterministic data pipeline**: Load body/title TSVs → rename columns → parse timestamps → aggregate multi-edges (weight, average sentiment).
-- **Directed signed graph**: NetworkX `DiGraph` with edge attributes `weight` and `avg_sentiment` for PageRank and signed/temporal analysis.
-- **Graph statistics**: Density, in/out degree, WCC/SCC, reciprocity.
-- **Visualizations**: Degree distributions (in/out), sentiment distribution, temporal activity, PageRank rankings, community subgraphs.
-- **Community detection**: Louvain method to find subreddit clusters (gaming, politics, memes, etc.).
-- **Association rules**: Baskets = “source subreddit → set of target subreddits”; Apriori + confidence/lift for co-link patterns.
-
----
-
-## 📝 Notes
-
-- **Data**: Reddit Hyperlink Network from [SNAP (Stanford)](https://snap.stanford.edu/data/soc-RedditHyperlinks.html). Research/academic use; data derived from public Reddit posts.
-- **Bias**: English-language and popular subreddits dominate; sentiment labels are crowdsourced. See Section (B) in the notebook for a full bias and ethics discussion.
-- **Scale**: ~35K nodes and ~138K unique edges (body) fit in memory; NetworkX and mlxtend run on a typical laptop.
-- Data files are not committed (too large); the notebook downloads them when needed.
-
----
-
-## ✨ Citation
-
-If you use this dataset or build on this code, please cite the Reddit Hyperlink Network paper:
-
-```bibtex
-@inproceedings{kumar2018community,
-  title={Community Interaction and Conflict on the Web},
-  author={Kumar, Srijan and Hamilton, William L. and Leskovec, Jure and Jurafsky, Daniel},
-  booktitle={Proceedings of the 2018 World Wide Web Conference (WWW 2018)},
-  year={2018},
-}
-```
-
-Dataset: [SNAP – Reddit Hyperlink Network](https://snap.stanford.edu/data/soc-RedditHyperlinks.html).
+1. **RQ1 (structure vs hostility):** **Yes.** Community boundaries matter: cross-community hostility rate is higher (**8.8% vs 6.9%**). PageRank and betweenness are related (**rho = 0.611**) but capture distinct structural roles.
+2. **RQ2 (conflict corridors):** **Yes, strongly.** Hostile co-targeting is highly structured and far richer than friendly co-targeting (**6,489** hostile rules; **607** conflict-only corridors).
+3. **RQ3 (predictability and drivers):** **Yes.** Hostile links are predictably classifiable (AUC around **0.78-0.80**), with a consistent edge for structural features over linguistic features (**59% vs 41%** importance).
