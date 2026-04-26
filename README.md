@@ -10,9 +10,6 @@ Checkpoint progression notebooks:
 - `checkpoints/237007751_checkpoint1.ipynb`
 - `checkpoints/237007751_checkpoint2.ipynb`
 
-Project video:
-- [Project walkthrough video](https://youtu.be/nEsfS9ury3U)
-
 ## Project Overview
 
 This CSCE 676 Data Mining project analyzes the SNAP Reddit Hyperlink Network to study inter-community conflict. The central theme is whether hostile cross-subreddit links can be predicted, and which factors are most informative: network structure, language features, or both.
