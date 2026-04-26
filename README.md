@@ -10,6 +10,10 @@ Checkpoint progression notebooks:
 - `checkpoints/237007751_checkpoint1.ipynb`
 - `checkpoints/237007751_checkpoint2.ipynb`
 
+## Plots and Assets
+
+- Keep exported figures from `main_notebook.ipynb` in `assets/`.
+
 ## Project Overview
 
 This CSCE 676 Data Mining project analyzes the SNAP Reddit Hyperlink Network to study inter-community conflict. The central theme is whether hostile cross-subreddit links can be predicted, and which factors are most informative: network structure, language features, or both.
@@ -88,11 +92,46 @@ Data-Mining-Project/
 ├── main_notebook.ipynb
 ├── requirements.txt
 ├── README.md
+├── assets/
+│   └── .gitkeep
 ├── data/
 │   └── .gitkeep
 └── .gitignore
 ```
 
-## Results Summary
+## Key Results (from notebook outputs)
 
-The analysis finds measurable structure in hostile inter-subreddit linking behavior, including identifiable conflict corridors and graph-level patterns that align with cross-community hostility. Predictive models using combined network and LIWC linguistic features provide meaningful signal for hostile-link classification.
+- **Boundary effect (plot + counts):** Cross-community links are more hostile than within-community links (**8.8%** vs **6.9%**), even though within-community links are more common overall.
+- **Conflict corridors (association-rule outputs):** Hostile mining yields **6,489** rules vs **241** positive-link rules; overlap analysis shows **607 conflict-only**, **16 friendly-only**, and **90 shared** corridors.
+- **Prediction quality (model output + confusion plots):** Phase 5 ROC-AUC is **0.8015** (GDBT) and **0.7854** (L1-LR). GDBT ranks better overall, while L1-LR captures more hostile links (negative-class recall **0.70** vs **0.08**).
+- **What drives conflict (feature-importance plots):** GBM importance is **59.0% structural** vs **41.0% linguistic**; top feature is `tgt_neg_incoming_frac` (**0.3869**).
+- **Temporal robustness (Phase 6):** AUC drops are small under forward-in-time evaluation: GDBT **-0.0137**, L1-LR **-0.0062**.
+- **Signed-network extension (Phase 7):** On 406,382 triangles, observed balanced fraction is **0.8382** vs null mean **0.8474** (**z = -2.93**), indicating structure but less balance than chance under this null.
+
+### Result Plots by Research Question
+
+- **RQ1 (structure vs hostility):**  
+  Cross- vs within-community hostility  
+  ![Phase 3 cross vs within hostility](assets/phase3_cross_vs_within_hostility.png)  
+  Centrality-position structure  
+  ![Phase 3 centrality scatter](assets/phase3_centrality_scatter.png)
+
+- **RQ2 (conflict corridors):**  
+  Conflict intensity context (hostility landscape used before corridor mining)  
+  ![Phase 2 sentiment and time](assets/phase2_sentiment_and_time.png)
+
+- **RQ3 (prediction and drivers):**  
+  Model error profile comparison  
+  ![Phase 5 confusion matrices](assets/phase5_model_confusion_matrices.png)  
+  Temporal robustness of predictive performance  
+  ![Phase 6 AUC comparison](assets/phase6_random_vs_temporal_auc.png)
+
+- **Extended analysis (beyond RQ1-RQ3):**  
+  Signed-network structural balance test  
+  ![Phase 7 balance null model](assets/phase7_signed_balance_null_model.png)
+
+## Per-RQ Answers
+
+1. **RQ1 (structure vs hostility):** **Yes.** Community boundaries matter: cross-community hostility rate is higher (**8.8% vs 6.9%**). PageRank and betweenness are related (**rho = 0.611**) but capture distinct structural roles.
+2. **RQ2 (conflict corridors):** **Yes, strongly.** Hostile co-targeting is highly structured and far richer than friendly co-targeting (**6,489** hostile rules; **607** conflict-only corridors).
+3. **RQ3 (predictability and drivers):** **Yes.** Hostile links are predictably classifiable (AUC around **0.78-0.80**), with a consistent edge for structural features over linguistic features (**59% vs 41%** importance).
