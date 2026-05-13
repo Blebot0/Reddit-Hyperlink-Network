@@ -1,6 +1,6 @@
 # What Drives Conflict Between Reddit Communities?
 
-Author: Keshav Kapur (UIN: 237007751)
+Author: Keshav Kapur
 
 ## Plots and Assets
 
@@ -54,8 +54,8 @@ jupyter notebook main_notebook.ipynb
 ```
 
 3. Optional progression review:
-- Open `checkpoints/237007751_checkpoint1.ipynb` first
-- Then `checkpoints/237007751_checkpoint2.ipynb`
+- Open `checkpoints/checkpoint1.ipynb` first
+- Then `checkpoints/checkpoint2.ipynb`
 - Then `main_notebook.ipynb` (submission notebook copy)
 
 ## Key Dependencies and Versions
@@ -79,8 +79,8 @@ Core packages (full pinned environment lives in `requirements.txt`):
 ```text
 Data-Mining-Project/
 ├── checkpoints/
-│   ├── 237007751_checkpoint1.ipynb
-│   └── 237007751_checkpoint2.ipynb
+│   ├── checkpoint1.ipynb
+│   └── checkpoint2.ipynb
 ├── main_notebook.ipynb
 ├── requirements.txt
 ├── README.md
