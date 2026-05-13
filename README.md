@@ -2,18 +2,6 @@
 
 Author: Keshav Kapur (UIN: 237007751)
 
-## Main Deliverable
-
-Start here: `main_notebook.ipynb`
-
-## Project Video
-
-[Watch the project video](https://youtu.be/nEsfS9ury3U)
-
-Checkpoint progression notebooks:
-- `checkpoints/237007751_checkpoint1.ipynb`
-- `checkpoints/237007751_checkpoint2.ipynb`
-
 ## Plots and Assets
 
 - Keep exported figures from `main_notebook.ipynb` in `assets/`.
